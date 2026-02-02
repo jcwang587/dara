@@ -27,13 +27,10 @@ if __name__ == "__main__":
     script_dir = os.path.dirname(os.path.abspath(__file__))
     target_dir = os.path.join(script_dir, "cifs_Li_Ni_O")
 
-    if not os.path.exists(target_dir):
-        print(f"Directory not found: {target_dir}")
+    no_occ = check_occupancy(target_dir)
+    if no_occ:
+        print("CIF files with no occupancy:")
+        for f in no_occ:
+            print(f)
     else:
-        no_occ = check_occupancy(target_dir)
-        if no_occ:
-            print("CIF files with no occupancy:")
-            for f in no_occ:
-                print(f)
-        else:
-            print("All CIF files have occupancy data.")
+        print("All CIF files have occupancy data.")
