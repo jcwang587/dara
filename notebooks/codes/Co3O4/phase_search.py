@@ -108,19 +108,23 @@ for phase_name in best_result.lst_data.phases_results.keys():
     try:
         # Get the refined structure
         refined_structure = best_result.export_structure(phase_name)
-        
+
         # Convert to CIF and save
         refined_cif = Cif.from_structure(refined_structure, filename=phase_name)
         output_path = output_dir / f"{phase_name}_refined.cif"
         refined_cif.to_file(output_path)
-        
+
         # Get phase info
         phase_info = best_result.lst_data.phases_results[phase_name]
         print(f"  Saved: {output_path}")
-        print(f"    - Weight fraction: {phase_info.gewicht[0]:.4f} ± {phase_info.gewicht[1]:.4f}")
+        print(
+            f"    - Weight fraction: {phase_info.gewicht[0]:.4f} ± {phase_info.gewicht[1]:.4f}"
+        )
         print(f"    - R-phase: {phase_info.rphase:.2f}%")
         if phase_info.a:
-            print(f"    - Lattice parameter a: {phase_info.a[0]:.6f} ± {phase_info.a[1]:.6f} nm")
+            print(
+                f"    - Lattice parameter a: {phase_info.a[0]:.6f} ± {phase_info.a[1]:.6f} nm"
+            )
     except Exception as e:
         print(f"  Warning: Could not export {phase_name}: {e}")
 
@@ -128,4 +132,3 @@ print(f"\nAll refined structures saved to: {output_dir}/")
 
 # From the result, you can see that for the phase `GeO2`, the algorithm identifies two
 # similar phases with slightly different spacegroups (152 and 154).
-

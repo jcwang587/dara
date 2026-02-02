@@ -13,9 +13,6 @@ from dara import search_phases
 from dara.cif import Cif
 from dara.structure_db import CODDatabase
 
-# Install dependencies if needed
-# pip install ipywidgets nbformat
-
 # Step 1: Prepare reference phases
 # Dara pre-builds an index of all the unique and low-energy phases in ICSD and COD
 # databases. It also implements a method to download CIF structures from COD data server
@@ -25,13 +22,10 @@ from dara.structure_db import CODDatabase
 # system for the search algorithm. Dara provides `ICSDDatabase` and `CODDatabase` to do
 # the filtering.
 #
-# In this example, we will use `CODDatabase` to download all the phases in the chemical system of `Ge-O-Zn`.
+# In this example, we will use `CODDatabase` to download all the phases in the chemical system of `Li-Ni-O`.
 
-# pattern_path = "tutorial_data/GeO2-ZnO_700C_60min.xrdml"
 pattern_path = "co3o4/CoO25C.xye"
-
-# three elements are present in the sample
-chemical_system = "Co-O"
+chemical_system = "Li-Ni-O"
 
 # The COD database contains methods to filter phases in the chemical system
 cod_database = CODDatabase()
@@ -52,11 +46,7 @@ all_icsd_ids = cod_database.get_cifs_by_chemsys(chemical_system, dest_dir=cifs_d
 # the Materials Project database for the ground-state entry with matching composition and spacegroup.
 
 # Step 2: Search for phases
-# After preparing the reference CIFs, we can start the phase search on a provided XRD
-# pattern.
-#
-# In this case, we are using the XRD pattern from the solid-state reaction sample
-# on our laboratory's Aeris diffractometer (`tutorial_data/GeO2-ZnO_700C_60min.xrdml`).
+# After preparing the reference CIFs, we can start the phase search on a provided XRD pattern.
 
 # gather all the phases in the cifs directory
 all_cifs = list(Path(cifs_dir).glob("*.cif"))
@@ -108,24 +98,24 @@ for phase_name in best_result.lst_data.phases_results.keys():
     try:
         # Get the refined structure
         refined_structure = best_result.export_structure(phase_name)
-        
+
         # Convert to CIF and save
         refined_cif = Cif.from_structure(refined_structure, filename=phase_name)
         output_path = output_dir / f"{phase_name}_refined.cif"
         refined_cif.to_file(output_path)
-        
+
         # Get phase info
         phase_info = best_result.lst_data.phases_results[phase_name]
         print(f"  Saved: {output_path}")
-        print(f"    - Weight fraction: {phase_info.gewicht[0]:.4f} ± {phase_info.gewicht[1]:.4f}")
+        print(
+            f"    - Weight fraction: {phase_info.gewicht[0]:.4f} ± {phase_info.gewicht[1]:.4f}"
+        )
         print(f"    - R-phase: {phase_info.rphase:.2f}%")
         if phase_info.a:
-            print(f"    - Lattice parameter a: {phase_info.a[0]:.6f} ± {phase_info.a[1]:.6f} nm")
+            print(
+                f"    - Lattice parameter a: {phase_info.a[0]:.6f} ± {phase_info.a[1]:.6f} nm"
+            )
     except Exception as e:
         print(f"  Warning: Could not export {phase_name}: {e}")
 
 print(f"\nAll refined structures saved to: {output_dir}/")
-
-# From the result, you can see that for the phase `GeO2`, the algorithm identifies two
-# similar phases with slightly different spacegroups (152 and 154).
-
