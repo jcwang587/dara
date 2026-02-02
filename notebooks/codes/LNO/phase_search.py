@@ -24,7 +24,7 @@ from dara.structure_db import CODDatabase
 #
 # In this example, we will use `CODDatabase` to download all the phases in the chemical system of `Li-Ni-O`.
 
-pattern_path = "co3o4/CoO25C.xye"
+pattern_path = "./data/LNO-6_2025-1014_2.rasx"
 chemical_system = "Li-Ni-O"
 
 # The COD database contains methods to filter phases in the chemical system
