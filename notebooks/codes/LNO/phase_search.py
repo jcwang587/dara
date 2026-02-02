@@ -54,7 +54,7 @@ all_cifs = list(Path(cifs_dir).glob("*.cif"))
 search_results = search_phases(
     pattern_path=pattern_path,
     phases=all_cifs,
-    wavelength="Co",
+    wavelength="Cu",
     instrument_profile="Aeris-fds-Pixcel1d-Medipix3",
 )
 
